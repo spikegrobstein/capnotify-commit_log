@@ -8,6 +8,9 @@ Currently it only supports git and uses the `git log --oneline` command internal
 A future version should support other SCMs if you're into that kind of thing. Anyone with
 repositories on other SCMs is encouraged to send me a pull request implementing that.
 
+NOTE: This is very much a work in progress and is NOT production ready. This is the first
+plugin for Capnotify and it's being used to work out aspects of the extension API.
+
 ## Installation
 
 Add this line to your application's Gemfile:
