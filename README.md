@@ -1,6 +1,12 @@
 # Capnotify::CommitLog
 
-TODO: Write a gem description
+This adds a commit log to your capnotify emails.
+
+This will list commits that are new to this deploy (compared to the previous deploy).
+Currently it only supports git and uses the `git log --oneline` command internaly.
+
+A future version should support other SCMs if you're into that kind of thing. Anyone with
+repositories on other SCMs is encouraged to send me a pull request implementing that.
 
 ## Installation
 
@@ -18,7 +24,9 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+All you need to do is include the following code after requiring `capnotify`:
+
+    require 'capnotify/commit_log'
 
 ## Contributing
 
