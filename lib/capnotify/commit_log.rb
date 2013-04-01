@@ -41,7 +41,7 @@ module Capnotify
           }
         CSS
 
-        c.template_path File.join( File.dirname(__FILE__), 'templates' )
+        c.template_path = File.join( File.dirname(__FILE__), 'templates' )
 
         c.render_for :html => '_commit_log.html.erb', :txt => '_commit_log.txt.erb'
 
