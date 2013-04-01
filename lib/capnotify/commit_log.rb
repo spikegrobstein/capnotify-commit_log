@@ -14,6 +14,33 @@ module Capnotify
         c.header = 'Log'
 
         c.css_class = 'commit-log'
+        c.custom_css = <<-CSS
+          .commit-log ul {
+            font-family: monospace;
+
+            list-style: none;
+            margin: 0;
+            padding: 0;
+          }
+
+          .commit-log ul li {
+            margin: 5px;
+          }
+
+          .commit-log ul li a {
+            font-weight: bold;
+            padding: 2px 5px;
+            background-color: #eee;
+            color: #666;
+            text-decoration: none;
+          }
+
+          .commit-log ul li a:hover {
+            text-decoration: underline;
+            color: black;
+          }
+        CSS
+
 
         c.content = commit_log('d7f8b9fb9757f00d69ac1657270b9fc29d15b7aa', '3ba4cdf61018daff0c4cdfef4ba0e65f600ba4e4')
       end
