@@ -1,5 +1,4 @@
 require "capnotify/commit_log/version"
-require "capnotify/commit_log/component"
 
 module Capnotify
   module CommitLog
