@@ -1,0 +1,8 @@
+<ul>
+  <% @content.each do |row| %>
+    <li>
+    <a href="http://github.com/<%= row[0] %>"><%= row[0] %></a>
+    <%= row[1] %>
+    </li>
+  <% end %>
+</ul>
