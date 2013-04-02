@@ -44,7 +44,7 @@ module Capnotify
 
         c.render_for :html => '_commit_log.html.erb', :txt => '_commit_log.txt.erb'
 
-        c.content = commit_log('d7f8b9fb9757f00d69ac1657270b9fc29d15b7aa', '3ba4cdf61018daff0c4cdfef4ba0e65f600ba4e4')
+        c.content = commit_log(fetch(:previous_revision, nil), fetch(:real_revision, nil))
       end
     end
 
