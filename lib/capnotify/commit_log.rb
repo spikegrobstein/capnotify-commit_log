@@ -4,7 +4,9 @@ module Capnotify
   module CommitLog
     def self.load_into(config)
       config.load do
-        capnotify.load_plugin(:capnotify_commit_log, ::Capnotify::CommitLog)
+        on(:load) do
+          capnotify.load_plugin(:capnotify_commit_log, ::Capnotify::CommitLog)
+        end
       end
     end
 
