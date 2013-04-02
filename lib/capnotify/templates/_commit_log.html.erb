@@ -1,7 +1,12 @@
 <ul>
   <% @content.each do |row| %>
     <li>
-    <a href="http://github.com/<%= row[0] %>"><%= row[0] %></a>
+    <% if config.fetch(:github_url, nil) && row[0].length >= 7 %>
+      <a href="<%= config.github_url %>/commit/<%= row[0] %>"><%= row[0] %></a>
+    <% else %>
+      <%= row[0] %>
+    <% end %>
+
     <%= row[1] %>
     </li>
   <% end %>
