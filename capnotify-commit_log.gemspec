@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Capnotify::CommitLog::VERSION
   spec.authors       = ["Spike Grobstein"]
   spec.email         = ["me@spike.cx"]
-  spec.description   = %q{add a commit log to your Capnotify messages}
-  spec.summary       = %q{add a commit log to your Capnotify messages}
+  spec.description   = %q{Add a detailed Git commit log to your Capnotify deloyment notification emails}
+  spec.summary       = %q{Git commit log for Capnotify emails}
   spec.homepage      = ""
   spec.license       = "MIT"
 
