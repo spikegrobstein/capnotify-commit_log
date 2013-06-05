@@ -1,10 +1,17 @@
+require 'git'
 require "capnotify"
 require "capnotify/commit_log/version"
 
 module Capnotify
   module CommitLog
 
-    DEFAULT_COMMIT_LOG_ENTRY = [ 'n/a', 'Log output not available.' ]
+    DEFAULT_COMMIT_LOG_ENTRY = {
+        :author  => 'n/a',
+        :date    => 'n/a',
+        :email   => 'n/a',
+        :sha     => 'n/a',
+        :message => 'Log output not available.'
+      }
 
     def self.load_into(config)
       config.load do
@@ -58,6 +65,29 @@ module Capnotify
       capnotify.delete_component :capnotify_commit_log
     end
 
+    # locate the git repository for the project
+    # starting with the local_git_repository_path
+    # or current working directory (or path, if specified),
+    # traverse the filesystem going up until we hit a git repository.
+    # returns nil if one is not found. otherwise returns a Git object
+    def find_git_repo(path=nil)
+      # use local_git_repository_path or Dir.pwd if path is not specified
+      path = fetch(:local_git_repository_path, Dir.pwd) if path.nil?
+
+      # expand the path
+      path = File.expand_path(path)
+
+      return nil if path == '/'
+
+      # try to open the current path
+      # if fail, go up a directory
+      begin
+        ::Git.open(path)
+      rescue ArgumentError
+        find_git_repo(File.join(path, '..'))
+      end
+    end
+
     # git log between +first_ref+ to +last_ref+
     # memoizes the output so this function can be called multiple times without re-running
     # FIXME: memoization does not account for arguments
@@ -70,17 +100,23 @@ module Capnotify
       puts "running commit log"
       return @commit_log unless @commit_log.nil?
 
+      git = find_git_repo
+
       begin
         raise "Ref missing" if first_ref.nil? || last_ref.nil? # jump to rescue block.
 
-        log_output = run_locally("git log --oneline #{ first_ref }..#{ last_ref }")
+        log_results = git.log(first_ref, last_ref)
 
-        puts "Got log output: #{ log_output }"
-
-        @commit_log = log_output.split("\n").map do |line|
-          fields = line.split("\s", 2)
-          [ fields[0], fields[1] ]
+        @commit_log = log_results.map do |log|
+          {
+            :author  => log.author,
+            :date    => log.date,
+            :email   => log.email,
+            :sha     => log.sha,
+            :message => log.message
+          }
         end
+
       rescue
         [ DEFAULT_COMMIT_LOG_ENTRY ]
       end
