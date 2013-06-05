@@ -1,7 +1,11 @@
+require "capnotify"
 require "capnotify/commit_log/version"
 
 module Capnotify
   module CommitLog
+
+    DEFAULT_COMMIT_LOG_ENTRY = [ 'n/a', 'Log output not available.' ]
+
     def self.load_into(config)
       config.load do
         on(:load) do
@@ -78,7 +82,7 @@ module Capnotify
           [ fields[0], fields[1] ]
         end
       rescue
-        [ [ 'n/a', 'Log output not available.' ] ]
+        [ DEFAULT_COMMIT_LOG_ENTRY ]
       end
     end
 
