@@ -1,6 +1,6 @@
 require 'git'
 require "capnotify"
-require "capnotify/commit_log/version"
+require "capnotify-commit_log/version"
 
 module Capnotify
   module CommitLog
