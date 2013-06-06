@@ -7,7 +7,7 @@ module Capnotify
 
     DEFAULT_COMMIT_LOG_ENTRY = {
         :author  => 'n/a',
-        :date    => 'n/a',
+        :date    =>  nil,
         :email   => 'n/a',
         :sha     => 'n/a',
         :message => 'Log output not available.'
