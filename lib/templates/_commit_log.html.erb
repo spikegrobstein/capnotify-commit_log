@@ -1,37 +1,34 @@
-<table>
-  <thead>
-    <tr>
-      <th>Sha</th>
-      <th>Author</th>
-      <th>Date</th>
-      <th>Message</th>
-    </tr>
-  </thead>
-  <tbody>
+<ul class="commit_log">
   <% @content.each do |commit| %>
-    <tr>
-      <td>
-        <% if config.fetch(:github_url, nil) && commit[:sha].length >= 7 %>
-          <a href="<%= config.github_url %>/commit/<%= commit[:sha] %>"><%= commit[:sha][0,7] %></a>
-        <% else %>
-          <%= commit[:sha][0,7] %>
-        <% end %>
-      </td>
-      <td>
-        <% if commit[:email].match /@/ %>
-          <%# include the author's name with a link to their email if it's there %>
-          <a href="mailto:<%= commit[:email] %>"><%= commit[:author] %></a>
-        <% else %>
-          <%= commit[:author] %>
-        <% end %>
-      </td>
-      <td>
-        <%= commit[:date] ? commit[:date].strftime('%Y-%m-%d') : 'n/a' %>
-      </td>
-      <td>
-        <%= commit[:message].split("\n", 2).first %>
-      </td>
-    </tr>
+  <li>
+    <h4 class="sha">
+      <% if config.fetch(:github_url, nil) && commit[:sha].length >= 7 %>
+        <a href="<%= config.github_url %>/commit/<%= commit[:sha] %>"><%= commit[:sha][0,7] %></a>
+      <% else %>
+        <%= commit[:sha][0,7] %>
+      <% end %>
+    </h4>
+
+    <div class="commit_body">
+      <h4>
+        <span class="commit_author">
+          <% if commit[:email].match /@/ %>
+            <%# include the author's name with a link to their email if it's there %>
+            <a href="mailto:<%= commit[:email] %>"><%= commit[:author] %></a>
+          <% else %>
+            <%= commit[:author] %>
+          <% end %>
+        </span>
+        @
+        <span class="commit_date">
+          <%= commit[:date] ? commit[:date].strftime('%Y-%m-%d') : 'n/a' %>
+      </span>
+      </h4>
+
+      <p class="commit_message"><%= commit[:message] %></p>
+    </div>
+  </li>
   <% end %>
-  </tbody>
-</table>
+</ul>
+<div style="float:none; clear:both;"><!-- float-fix --></div>
+

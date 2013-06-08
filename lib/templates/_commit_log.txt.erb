@@ -1,0 +1,7 @@
+<% @content.each do |commit| %>
+<%= commit[:sha][0,7] %> <%= commit[:author] %> <<%= commit[:email] %>> @ <%= commit[:date].strftime('%Y-%m-%d') %>
+
+<%= commit[:message].gsub(/^/, '        ').gsub(/\t/, '  ') %>
+
+
+<% end %>

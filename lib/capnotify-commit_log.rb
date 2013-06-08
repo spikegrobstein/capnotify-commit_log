@@ -1,9 +1,12 @@
 require 'git'
 require "capnotify"
 require "capnotify-commit_log/version"
+require 'pry'
 
 module Capnotify
   module CommitLog
+
+    PLUGIN_NAME = :capnotify_commit_log
 
     DEFAULT_COMMIT_LOG_ENTRY = {
         :author  => 'n/a',
@@ -16,7 +19,7 @@ module Capnotify
     def self.load_into(config)
       config.load do
         on(:load) do
-          capnotify.load_plugin(:capnotify_commit_log, ::Capnotify::CommitLog)
+          capnotify.load_plugin(Capnotify::CommitLog)
         end
       end
     end
@@ -27,29 +30,56 @@ module Capnotify
 
         c.css_class = 'commit-log'
         c.custom_css = <<-CSS
-          .commit-log ul {
-            font-family: monospace;
-
+          ul.commit_log {
             list-style: none;
             margin: 0;
             padding: 0;
+            clear: both;
           }
 
-          .commit-log ul li {
-            margin: 5px;
+          ul.commit_log li {
+            clear: both;
+            display: block;
+            white-space: nowrap;
           }
 
-          .commit-log ul li a {
-            font-weight: bold;
-            padding: 2px 5px;
+          ul.commit_log h4.sha {
+            font-family: monospace;
             background-color: #eee;
             color: #666;
+            float: left;
+            padding: 2px 0px;
+            margin: 0;
+            margin-right: 5px;
+            width: 70px;
+            text-align: center;
+          }
+
+          ul.commit_log .commit_body {
+            <!-- float: left; -->
+            white-space: normal;
+
+            margin-left: 75px;
+          }
+
+          ul.commit_log .commit_body h4 {
+            padding: 2px 0px;
+            font-weight: bold;
+            margin: 0;
+          }
+
+          ul.commit_log .commit_body .commit_message {
+            white-space: pre-wrap;
+            font-family: monospace;
+          }
+
+          ul.commit_log a {
+            font-weight: bold;
             text-decoration: none;
           }
 
-          .commit-log ul li a:hover {
+          ul.commit_log a:hover {
             text-decoration: underline;
-            color: black;
           }
         CSS
 
@@ -105,13 +135,13 @@ module Capnotify
       begin
         raise "Ref missing" if first_ref.nil? || last_ref.nil? # jump to rescue block.
 
-        log_results = git.log(first_ref, last_ref)
+        log_results = git.log.between(first_ref, last_ref)
 
         @commit_log = log_results.map do |log|
           {
-            :author  => log.author,
+            :author  => log.author.name,
             :date    => log.date,
-            :email   => log.email,
+            :email   => log.author.email,
             :sha     => log.sha,
             :message => log.message
           }
